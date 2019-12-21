@@ -21,10 +21,13 @@ func Part1(args []string) int {
 	return gravityAssistProgram.ValueAt(0)
 }
 
-func restoreTo1202ProgramAlarmState(program *intcode.Program) *intcode.Program {
-	program.ReplaceAt(1, 12)
-	program.ReplaceAt(2, 2)
-	return program
+func restoreTo1202ProgramAlarmState(program *intcode.Program) {
+	provideInput(program, 12, 1)
+}
+
+func provideInput(program *intcode.Program, noun, verb int) {
+	program.ReplaceAt(1, noun)
+	program.ReplaceAt(2, verb)
 }
 
 func execute(program *intcode.Program) {
