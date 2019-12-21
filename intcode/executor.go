@@ -24,7 +24,6 @@ type Executor struct {
 func NewExecutor(program *Program) *Executor {
 	executor := new(Executor)
 	executor.memory = program
-	executor.instructionPointer = 0
 
 	return executor
 }
@@ -32,7 +31,6 @@ func NewExecutor(program *Program) *Executor {
 // Execute runs the program in memory until it halts
 func (e *Executor) Execute() {
 	if e.NextOpcode() == HALT {
-		// println("halting")
 		return
 	}
 
@@ -52,14 +50,14 @@ func (e *Executor) Execute() {
 // Add uses the instruction to take values and add them together, then places
 // them in the output
 func (e *Executor) Add() {
-	input0position := e.memory.ValueAt(e.instructionPointer + 1)
-	input1position := e.memory.ValueAt(e.instructionPointer + 2)
-	outputPosition := e.memory.ValueAt(e.instructionPointer + 3)
+	input0position := e.readMemoryAddress(e.instructionPointer + 1)
+	input1position := e.readMemoryAddress(e.instructionPointer + 2)
+	outputPosition := e.readMemoryAddress(e.instructionPointer + 3)
 
-	input0value := e.memory.ValueAt(input0position)
-	input1value := e.memory.ValueAt(input1position)
+	input0value := e.readMemoryAddress(input0position)
+	input1value := e.readMemoryAddress(input1position)
 
-	e.memory.ReplaceAt(outputPosition, input0value+input1value)
+	e.writeMemoryAddress(outputPosition, input0value+input1value)
 
 	e.Step()
 }
@@ -67,14 +65,14 @@ func (e *Executor) Add() {
 // Multiply uses the instruction to take values and multiply them together,
 // then places the product in the output
 func (e *Executor) Multiply() {
-	input0position := e.memory.ValueAt(e.instructionPointer + 1)
-	input1position := e.memory.ValueAt(e.instructionPointer + 2)
-	outputPosition := e.memory.ValueAt(e.instructionPointer + 3)
+	input0position := e.readMemoryAddress(e.instructionPointer + 1)
+	input1position := e.readMemoryAddress(e.instructionPointer + 2)
+	outputPosition := e.readMemoryAddress(e.instructionPointer + 3)
 
-	input0value := e.memory.ValueAt(input0position)
-	input1value := e.memory.ValueAt(input1position)
+	input0value := e.readMemoryAddress(input0position)
+	input1value := e.readMemoryAddress(input1position)
 
-	e.memory.ReplaceAt(outputPosition, input0value*input1value)
+	e.writeMemoryAddress(outputPosition, input0value*input1value)
 
 	e.Step()
 }
@@ -87,4 +85,12 @@ func (e *Executor) NextOpcode() Opcode {
 // Step moves the instruction pointer forward
 func (e *Executor) Step() {
 	e.instructionPointer += 4
+}
+
+func (e *Executor) readMemoryAddress(position int) int {
+	return e.memory.ValueAt(position)
+}
+
+func (e *Executor) writeMemoryAddress(position, value int) {
+	e.memory.ReplaceAt(position, value)
 }
