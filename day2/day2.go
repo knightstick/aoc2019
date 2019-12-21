@@ -16,9 +16,9 @@ func Part1(args []string) int {
 	gravityAssistProgram := intcode.NewProgram(gravityAssistProgramString)
 
 	restoreTo1202ProgramAlarmState(gravityAssistProgram)
-	execute(gravityAssistProgram)
+	output := intcode.Execute(gravityAssistProgram)
 
-	return gravityAssistProgram.ValueAt(0)
+	return output[0]
 }
 
 func restoreTo1202ProgramAlarmState(program *intcode.Program) {
@@ -28,8 +28,4 @@ func restoreTo1202ProgramAlarmState(program *intcode.Program) {
 func provideInput(program *intcode.Program, noun, verb int) {
 	program.ReplaceAt(1, noun)
 	program.ReplaceAt(2, verb)
-}
-
-func execute(program *intcode.Program) {
-	intcode.Execute(program)
 }

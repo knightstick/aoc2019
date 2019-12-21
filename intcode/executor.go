@@ -15,7 +15,7 @@ const (
 // An Executor takes a program to put into memory, and then can execute the
 // instructionns
 type Executor struct {
-	memory             *Program
+	memory             []int
 	instructionPointer int
 }
 
@@ -23,28 +23,32 @@ type Executor struct {
 // as the initial state of the memory
 func NewExecutor(program *Program) *Executor {
 	executor := new(Executor)
-	executor.memory = program
+	memory := make([]int, len(program.Values))
+	copy(memory, program.Values)
+	executor.memory = memory
 
 	return executor
 }
 
 // Execute runs the program in memory until it halts
-func (e *Executor) Execute() {
+func (e *Executor) Execute() *Executor {
 	if e.NextOpcode() == HALT {
-		return
+		return e
 	}
 
 	if e.NextOpcode() == ADD {
 		e.Add()
 		e.Execute()
-		return
+		return e
 	}
 
 	if e.NextOpcode() == MULTIPLY {
 		e.Multiply()
 		e.Execute()
-		return
+		return e
 	}
+
+	return e
 }
 
 // Add uses the instruction to take values and add them together, then places
@@ -79,7 +83,7 @@ func (e *Executor) Multiply() {
 
 // NextOpcode finds the Opcode at the start of the next instuction to execute
 func (e *Executor) NextOpcode() Opcode {
-	return Opcode(e.memory.ValueAt(e.instructionPointer))
+	return Opcode(e.readMemoryAddress(e.instructionPointer))
 }
 
 // Step moves the instruction pointer forward
@@ -87,10 +91,14 @@ func (e *Executor) Step() {
 	e.instructionPointer += 4
 }
 
+func (e *Executor) Memory() []int {
+	return e.memory
+}
+
 func (e *Executor) readMemoryAddress(position int) int {
-	return e.memory.ValueAt(position)
+	return e.memory[position]
 }
 
 func (e *Executor) writeMemoryAddress(position, value int) {
-	e.memory.ReplaceAt(position, value)
+	e.memory[position] = value
 }

@@ -1,5 +1,7 @@
 package intcode
 
-func Execute(p *Program) {
-	NewExecutor(p).Execute()
+func Execute(p *Program) []int {
+	e := NewExecutor(p)
+	e.Execute()
+	return e.memory
 }

@@ -117,41 +117,41 @@ func assertNextOpcode(t *testing.T, executor *intcode.Executor, opcode intcode.O
 func TestExecution(t *testing.T) {
 	t.Run("addition", func(t *testing.T) {
 		initial := intcode.NewProgram("1,0,0,0,99")
-		intcode.Execute(initial)
-		expected := intcode.NewProgram("2,0,0,0,99")
+		actual := intcode.Execute(initial)
+		expected := []int{2, 0, 0, 0, 99}
 
-		if !reflect.DeepEqual(initial, expected) {
-			t.Errorf("expected %v, got %v", expected, initial)
+		if !reflect.DeepEqual(actual, expected) {
+			t.Errorf("expected %v, got %v", expected, actual)
 		}
 	})
 
 	t.Run("multiplication", func(t *testing.T) {
 		initial := intcode.NewProgram("2,3,0,3,99")
-		intcode.Execute(initial)
-		expected := intcode.NewProgram("2,3,0,6,99")
+		actual := intcode.Execute(initial)
+		expected := []int{2, 3, 0, 6, 99}
 
-		if !reflect.DeepEqual(initial, expected) {
-			t.Errorf("expected %v, got %v", expected, initial)
+		if !reflect.DeepEqual(actual, expected) {
+			t.Errorf("expected %v, got %v", expected, actual)
 		}
 	})
 
 	t.Run("multiplication again", func(t *testing.T) {
 		initial := intcode.NewProgram("2,4,4,5,99,0")
-		intcode.Execute(initial)
-		expected := intcode.NewProgram("2,4,4,5,99,9801")
+		actual := intcode.Execute(initial)
+		expected := []int{2, 4, 4, 5, 99, 9801}
 
-		if !reflect.DeepEqual(initial, expected) {
-			t.Errorf("expected %v, got %v", expected, initial)
+		if !reflect.DeepEqual(actual, expected) {
+			t.Errorf("expected %v, got %v", expected, actual)
 		}
 	})
 
 	t.Run("many steps", func(t *testing.T) {
 		initial := intcode.NewProgram("1,1,1,4,99,5,6,0,99")
-		intcode.Execute(initial)
-		expected := intcode.NewProgram("30,1,1,4,2,5,6,0,99")
+		actual := intcode.Execute(initial)
+		expected := []int{30, 1, 1, 4, 2, 5, 6, 0, 99}
 
-		if !reflect.DeepEqual(initial, expected) {
-			t.Errorf("expected %v, got %v", expected, initial)
+		if !reflect.DeepEqual(actual, expected) {
+			t.Errorf("expected %v, got %v", expected, actual)
 		}
 	})
 }
