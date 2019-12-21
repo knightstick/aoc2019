@@ -25,7 +25,11 @@ func (ip *Program) ValueAt(position int) int {
 // ReplaceAt overwrites the value at the specified position with the new value
 // supplied
 func (ip *Program) ReplaceAt(position, value int) {
+	if position >= len(ip.Values) {
+		panic("out of bounds")
+	}
 
+	ip.Values[position] = value
 }
 
 func valuesFromString(string string) (values []int) {

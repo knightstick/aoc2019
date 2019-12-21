@@ -58,3 +58,27 @@ func TestValueAt(t *testing.T) {
 		}
 	})
 }
+
+func TestReplaceAt(t *testing.T) {
+	t.Run("first value", func(t *testing.T) {
+		program := intcode.NewProgram("1,0,0,0,99")
+		program.ReplaceAt(1, 2)
+		value := program.ValueAt(1)
+		expected := 2
+
+		if value != expected {
+			t.Errorf("expected %d, got %d", expected, value)
+		}
+	})
+
+	t.Run("last value", func(t *testing.T) {
+		program := intcode.NewProgram("1,0,0,0,99,0")
+		program.ReplaceAt(5, 99)
+		value := program.ValueAt(5)
+		expected := 99
+
+		if value != expected {
+			t.Errorf("expected %d, got %d", expected, value)
+		}
+	})
+}
