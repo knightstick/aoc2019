@@ -18,5 +18,7 @@ func main() {
 	switch args[0] {
 	case "1-1":
 		fmt.Println(day1.Part1(args[1:]))
+	case "1-2":
+		fmt.Println(day1.Part2(args[1:]))
 	}
 }
