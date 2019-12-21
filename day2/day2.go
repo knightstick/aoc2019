@@ -1,7 +1,6 @@
 package day2
 
 import (
-	"fmt"
 	"github.com/knightstick/aoc2019/intcode"
 )
 
@@ -19,7 +18,6 @@ func Part1(args []string) int {
 	restoreTo1202ProgramAlarmState(gravityAssistProgram)
 	execute(gravityAssistProgram)
 
-	fmt.Printf("gravity assist program: %v\n", gravityAssistProgram)
 	return gravityAssistProgram.ValueAt(0)
 }
 
@@ -29,6 +27,6 @@ func restoreTo1202ProgramAlarmState(program *intcode.Program) *intcode.Program {
 	return program
 }
 
-func execute(program *intcode.Program)  {
+func execute(program *intcode.Program) {
 	intcode.Execute(program)
 }

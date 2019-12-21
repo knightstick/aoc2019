@@ -82,3 +82,76 @@ func TestReplaceAt(t *testing.T) {
 		}
 	})
 }
+
+func TestExecutorConstruction(t *testing.T) {
+	t.Run("add program", func(t *testing.T) {
+		program := intcode.NewProgram("1,0,0,0,99")
+		executor := intcode.NewExecutor(program)
+
+		assertNextOpcode(t, executor, intcode.ADD)
+	})
+
+	t.Run("multiply program", func(t *testing.T) {
+		program := intcode.NewProgram("2,0,0,0,99")
+		executor := intcode.NewExecutor(program)
+
+		assertNextOpcode(t, executor, intcode.MULTIPLY)
+	})
+
+	t.Run("halt program", func(t *testing.T) {
+		program := intcode.NewProgram("99")
+		executor := intcode.NewExecutor(program)
+
+		assertNextOpcode(t, executor, intcode.HALT)
+	})
+}
+
+func assertNextOpcode(t *testing.T, executor *intcode.Executor, opcode intcode.Opcode) {
+	nextOpcode := executor.NextOpcode()
+
+	if nextOpcode != opcode {
+		t.Errorf("expected opcode ADD but got %d", opcode)
+	}
+}
+
+func TestExecution(t *testing.T) {
+	t.Run("addition", func(t *testing.T) {
+		initial := intcode.NewProgram("1,0,0,0,99")
+		intcode.Execute(initial)
+		expected := intcode.NewProgram("2,0,0,0,99")
+
+		if !reflect.DeepEqual(initial, expected) {
+			t.Errorf("expected %v, got %v", expected, initial)
+		}
+	})
+
+	t.Run("multiplication", func(t *testing.T) {
+		initial := intcode.NewProgram("2,3,0,3,99")
+		intcode.Execute(initial)
+		expected := intcode.NewProgram("2,3,0,6,99")
+
+		if !reflect.DeepEqual(initial, expected) {
+			t.Errorf("expected %v, got %v", expected, initial)
+		}
+	})
+
+	t.Run("multiplication again", func(t *testing.T) {
+		initial := intcode.NewProgram("2,4,4,5,99,0")
+		intcode.Execute(initial)
+		expected := intcode.NewProgram("2,4,4,5,99,9801")
+
+		if !reflect.DeepEqual(initial, expected) {
+			t.Errorf("expected %v, got %v", expected, initial)
+		}
+	})
+
+	t.Run("many steps", func(t *testing.T) {
+		initial := intcode.NewProgram("1,1,1,4,99,5,6,0,99")
+		intcode.Execute(initial)
+		expected := intcode.NewProgram("30,1,1,4,2,5,6,0,99")
+
+		if !reflect.DeepEqual(initial, expected) {
+			t.Errorf("expected %v, got %v", expected, initial)
+		}
+	})
+}
