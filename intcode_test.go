@@ -26,3 +26,35 @@ func TestProgramConstruction(t *testing.T) {
 		}
 	}
 }
+
+func TestValueAt(t *testing.T) {
+	t.Run("first value", func(t *testing.T) {
+		program := intcode.NewProgram("1,0,0,0,99")
+		actual := program.ValueAt(0)
+		expected := 1
+
+		if actual != expected {
+			t.Errorf("expected %d, got %d", expected, actual)
+		}
+	})
+
+	t.Run("second value", func(t *testing.T) {
+		program := intcode.NewProgram("1,2,0,0,99")
+		actual := program.ValueAt(1)
+		expected := 2
+
+		if actual != expected {
+			t.Errorf("expected %d, got %d", expected, actual)
+		}
+	})
+
+	t.Run("last value", func(t *testing.T) {
+		program := intcode.NewProgram("1,2,0,0,99")
+		actual := program.ValueAt(4)
+		expected := 99
+
+		if actual != expected {
+			t.Errorf("expected %d, got %d", expected, actual)
+		}
+	})
+}

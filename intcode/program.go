@@ -19,7 +19,7 @@ func NewProgram(string string) *Program {
 
 // ValueAt gets the value at the specified position
 func (ip *Program) ValueAt(position int) int {
-	return 0
+	return ip.Values[position]
 }
 
 // ReplaceAt overwrites the value at the specified position with the new value
