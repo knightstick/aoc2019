@@ -21,6 +21,31 @@ func Part1(args []string) int {
 	return output[0]
 }
 
+// Part2 finds the noun and verb inputs to the gravityAssistProgram that generate
+// a particular outcome, and then returns (100 * noun) + verb
+func Part2(args []string) int {
+	if len(args) != 1 {
+		panic("expected 1 argument")
+	}
+
+	gravityAssistProgramString := args[0]
+	gravityAssistProgram := intcode.NewProgram(gravityAssistProgramString)
+
+	for noun := 0; noun <= 99; noun++ {
+		for verb := 0; verb <= 99; verb++ {
+
+			provideInput(gravityAssistProgram, noun, verb)
+			memory := intcode.Execute(gravityAssistProgram)
+
+			if memory[0] == 19690720 {
+				return (100 * noun) + verb
+			}
+		}
+	}
+
+	panic("could not find an answer")
+}
+
 func restoreTo1202ProgramAlarmState(program *intcode.Program) {
 	provideInput(program, 12, 1)
 }
