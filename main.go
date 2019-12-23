@@ -8,6 +8,7 @@ import (
 	"github.com/knightstick/aoc2019/day1"
 	"github.com/knightstick/aoc2019/day2"
 	"github.com/knightstick/aoc2019/day3"
+	"github.com/knightstick/aoc2019/day4"
 )
 
 var dispatch = map[string]func([]string) int{
@@ -17,6 +18,7 @@ var dispatch = map[string]func([]string) int{
 	"2-2": day2.Part2,
 	"3-1": day3.Part1,
 	"3-2": day3.Part2,
+	"4-1": day4.Part1,
 }
 
 func main() {

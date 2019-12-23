@@ -6,7 +6,7 @@
     {
       "label": "build and run",
       "type": "shell",
-      "command": "go build && ./aoc2019 3-2 $(cat inputs/day3.txt)",
+      "command": "go build && ./aoc2019 4-1 $(cat inputs/day4.txt)",
       "group": {
         "kind": "build",
         "isDefault": true
