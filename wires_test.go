@@ -143,3 +143,27 @@ func assertIntersections(t *testing.T, wire0, wire1 *wires.Wire, expected []wire
 		t.Errorf("expected %v, got %v", expected, actual)
 	}
 }
+
+func TestSignalDelay(t *testing.T) {
+	t.Run("first point on both", func(t *testing.T) {
+		wire0 := wires.NewWire("R1")
+		wire1 := wires.NewWire("R1")
+		actual := wires.SignalDelay(wires.Point{X: 1, Y: 0}, wire0, wire1)
+		expected := 2
+
+		if actual != expected {
+			t.Errorf("expected %d, got %d", expected, actual)
+		}
+	})
+
+	t.Run("a few steps on both", func(t *testing.T) {
+		wire0 := wires.NewWire("R1,U2,R1,U2")
+		wire1 := wires.NewWire("U3,L1,U1,R2,D1,R2")
+		actual := wires.SignalDelay(wires.Point{X: 2, Y: 3}, wire0, wire1)
+		expected := 5 + 9
+
+		if actual != expected {
+			t.Errorf("expected %d, got %d", expected, actual)
+		}
+	})
+}

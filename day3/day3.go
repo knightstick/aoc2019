@@ -33,3 +33,29 @@ func Part1(args []string) int {
 
 	panic("no min distance found")
 }
+
+// Part2 finds the intersection with the lowest combined signal delay
+func Part2(args []string) int {
+	wire0 := wires.NewWire(args[0])
+	wire1 := wires.NewWire(args[1])
+
+	intersections := wires.Intersections(wire0, wire1)
+
+	signalDelays := map[wires.Point]int{}
+	for _, point := range intersections {
+		signalDelays[point] = wires.SignalDelay(point, wire0, wire1)
+	}
+
+	minDelay := math.MaxInt64
+	for _, delay := range signalDelays {
+		if delay < minDelay {
+			minDelay = delay
+		}
+	}
+
+	if minDelay < math.MaxInt64 {
+		return minDelay
+	}
+
+	panic("no min delay found")
+}

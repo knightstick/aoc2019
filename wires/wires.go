@@ -48,6 +48,19 @@ func Intersections(wire0, wire1 *Wire) (result []Point) {
 	return
 }
 
+func SignalDelay(point Point, wire0, wire1 *Wire) int {
+	return wireDistance(point, wire0) + wireDistance(point, wire1)
+}
+
+func wireDistance(point Point, wire *Wire) (result int) {
+	for index, other := range wire.Segments {
+		if reflect.DeepEqual(point, other) {
+			return index
+		}
+	}
+	panic("point not in wire")
+}
+
 type direction struct {
 	cardinality cardinality
 	distance    int

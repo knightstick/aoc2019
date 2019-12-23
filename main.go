@@ -16,6 +16,7 @@ var dispatch = map[string]func([]string) int{
 	"2-1": day2.Part1,
 	"2-2": day2.Part2,
 	"3-1": day3.Part1,
+	"3-2": day3.Part2,
 }
 
 func main() {
